@@ -8,13 +8,8 @@ import { ParticleBackground } from "./components/ParticleBackground"
 import { MoodSelector } from "./components/MoodSelector"
 import { LetItOut } from "./components/LetItOut"
 import { HugButton } from "./components/HugButton"
-import { SoundToggle } from "./components/SoundToggle"
 
 const SERVER_URL = import.meta.env.DEV ? "http://localhost:3000/api" : "/api"
-
-// Chime sound URL (royalty-free from Mixkit)
-const CHIME_SOUND_URL =
-  "https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"
 
 function App() {
   const [reminder, setReminder] = useState<Reminder | null>(null)
@@ -22,34 +17,14 @@ function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [mood, setMood] = useState<Mood>("okay")
   const [isWiggling, setIsWiggling] = useState(false)
-  const [soundEnabled, setSoundEnabled] = useState(false)
-  const audioRef = useRef<HTMLAudioElement | null>(null)
 
   // Track shown reminders to prevent duplicates
   const shownRemindersRef = useRef<Set<string>>(new Set())
-
-  // Initialize audio element
-  useEffect(() => {
-    audioRef.current = new Audio(CHIME_SOUND_URL)
-    audioRef.current.volume = 0.3
-    return () => {
-      audioRef.current = null
-    }
-  }, [])
 
   // Reset shown reminders when mood changes
   useEffect(() => {
     shownRemindersRef.current.clear()
   }, [mood])
-
-  const playChime = useCallback(() => {
-    if (soundEnabled && audioRef.current) {
-      audioRef.current.currentTime = 0
-      audioRef.current.play().catch(() => {
-        // Ignore autoplay errors
-      })
-    }
-  }, [soundEnabled])
 
   const fetchReminder = useCallback(async () => {
     setIsLoading(true)
@@ -88,17 +63,12 @@ function App() {
 
       setReminder(data)
       setReminderKey((prev) => prev + 1)
-      playChime()
     } catch (error) {
       console.error("Failed to fetch reminder:", error)
     } finally {
       setIsLoading(false)
     }
-  }, [mood, playChime])
-
-  const handleSoundChange = useCallback((enabled: boolean) => {
-    setSoundEnabled(enabled)
-  }, [])
+  }, [mood])
 
   const handleMoodChange = useCallback((newMood: Mood) => {
     setMood(newMood)
@@ -131,9 +101,6 @@ function App() {
     >
       {/* Particle background */}
       <ParticleBackground />
-
-      {/* Sound toggle */}
-      <SoundToggle onSoundChange={handleSoundChange} />
 
       {/* Breathing bubble - bottom right corner */}
       <BreathingBubble />
