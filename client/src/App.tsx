@@ -144,7 +144,7 @@ function App() {
 
           {/* Section 4: Action Buttons */}
           <section
-            className="w-full mb-6 animate-fade-in"
+            className="w-full mb-2 animate-fade-in"
             style={{ animationDelay: "0.2s" }}
           >
             <div className="flex flex-col gap-2.5">
