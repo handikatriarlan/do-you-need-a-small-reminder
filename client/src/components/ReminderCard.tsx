@@ -26,9 +26,6 @@ export function ReminderCard({ reminder, isLoading }: ReminderCardProps) {
           <p className="text-base text-foreground/60 leading-relaxed">
             tap below to receive a gentle reminder
           </p>
-          <p className="text-xs text-muted-foreground/40">
-            we have one just for you
-          </p>
         </div>
       </div>
     )
@@ -36,23 +33,23 @@ export function ReminderCard({ reminder, isLoading }: ReminderCardProps) {
 
   return (
     <div
-      className="glass-card rounded-2xl p-5 md:p-6 w-full text-center animate-fade-in animate-soft-glow"
+      className="glass-card rounded-2xl p-5 md:p-6 w-full text-center reminder-card-enter"
       key={reminder.message}
     >
-      <div className="flex flex-col items-center gap-3">
+      <div className="flex flex-col items-center gap-3 animate-reminder-content">
         <span
-          className="text-3xl md:text-4xl"
+          className="text-4xl md:text-5xl animate-reminder-icon"
           role="img"
           aria-label="reminder icon"
         >
           {reminder.icon}
         </span>
-        <p className="text-base md:text-lg text-foreground font-medium leading-relaxed">
+        <p className="text-base md:text-lg text-foreground font-medium leading-relaxed animate-reminder-text">
           {reminder.message}
         </p>
-        <div className="flex items-center gap-2 text-xs text-muted-foreground/60">
+        <div className="flex items-center gap-2 text-xs text-muted-foreground/60 animate-reminder-label">
           <span className="w-1 h-1 rounded-full bg-muted-foreground/30" />
-          <span>a {reminder.emotion} reminder for you</span>
+          <span>a {reminder.emotion} reminder</span>
           <span className="w-1 h-1 rounded-full bg-muted-foreground/30" />
         </div>
       </div>

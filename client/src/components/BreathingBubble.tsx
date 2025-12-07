@@ -59,11 +59,11 @@ export function BreathingBubble() {
   const getPhaseText = () => {
     switch (breathPhase) {
       case "inhale":
-        return "breathe in slowly..."
+        return "breathe in..."
       case "hold":
-        return "hold gently..."
+        return "hold..."
       case "exhale":
-        return "breathe out slowly..."
+        return "breathe out..."
       case "rest":
         return "rest..."
     }
@@ -97,46 +97,46 @@ export function BreathingBubble() {
 
   return (
     <>
-      {/* Floating bubble in corner */}
+      {/* Floating bubble - bottom right, above footer */}
       <button
         onClick={handleOpen}
-        className="fixed bottom-20 right-4 md:bottom-8 md:right-8 w-14 h-14 rounded-full animate-breathe shadow-lg flex items-center justify-center z-30 hover:scale-110 active:scale-95 transition-transform border-2 border-white/30"
+        className="fixed bottom-16 right-4 w-12 h-12 rounded-full animate-breathe shadow-lg flex items-center justify-center z-30 hover:scale-110 active:scale-95 transition-transform border border-white/40"
         aria-label="Open breathing exercise"
         style={{
           background:
-            "linear-gradient(135deg, rgba(232, 244, 255, 0.9) 0%, rgba(245, 230, 255, 0.9) 100%)",
+            "linear-gradient(135deg, rgba(232, 244, 255, 0.95) 0%, rgba(245, 230, 255, 0.95) 100%)",
         }}
       >
-        <span className="text-2xl">🫧</span>
+        <span className="text-xl">🫧</span>
       </button>
 
       {/* Breathing overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center p-6 transition-all"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center p-4 transition-all"
           style={{
             background:
-              "linear-gradient(180deg, rgba(245, 230, 255, 0.95) 0%, rgba(255, 248, 232, 0.95) 100%)",
+              "linear-gradient(180deg, rgba(245, 230, 255, 0.97) 0%, rgba(255, 248, 232, 0.97) 100%)",
             backdropFilter: "blur(20px)",
           }}
           onClick={handleClose}
         >
           <div
-            className="flex flex-col items-center gap-8 max-w-sm text-center"
+            className="flex flex-col items-center gap-6 max-w-xs text-center"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
             <div>
-              <h2 className="text-2xl md:text-3xl font-medium text-foreground/80 mb-2">
+              <h2 className="text-xl md:text-2xl font-medium text-foreground/80 mb-1">
                 breathe with me 🌬️
               </h2>
-              <p className="text-sm text-muted-foreground/60">
-                follow the circle to calm your mind
+              <p className="text-xs text-muted-foreground/60">
+                follow the circle
               </p>
             </div>
 
             {/* Breathing circle */}
-            <div className="relative flex items-center justify-center w-48 h-48 md:w-56 md:h-56">
+            <div className="relative flex items-center justify-center w-40 h-40">
               {/* Outer glow ring */}
               <div
                 className={`absolute w-full h-full rounded-full transition-all ease-in-out ${
@@ -148,13 +148,13 @@ export function BreathingBubble() {
                 } ${getBreathSize()}`}
                 style={{
                   background:
-                    "radial-gradient(circle, rgba(200, 180, 255, 0.2) 0%, transparent 70%)",
+                    "radial-gradient(circle, rgba(200, 180, 255, 0.15) 0%, transparent 70%)",
                 }}
               />
 
               {/* Main breathing circle */}
               <div
-                className={`w-32 h-32 md:w-40 md:h-40 rounded-full flex flex-col items-center justify-center transition-all ease-in-out ${
+                className={`w-28 h-28 rounded-full flex flex-col items-center justify-center transition-all ease-in-out ${
                   breathPhase === "inhale" || breathPhase === "hold"
                     ? "duration-[4000ms]"
                     : breathPhase === "exhale"
@@ -163,44 +163,36 @@ export function BreathingBubble() {
                 } ${getBreathSize()}`}
                 style={{
                   background:
-                    "radial-gradient(circle, rgba(200, 180, 255, 0.5) 0%, rgba(255, 228, 236, 0.3) 70%)",
-                  boxShadow: "0 0 40px rgba(200, 180, 255, 0.3)",
+                    "radial-gradient(circle, rgba(200, 180, 255, 0.45) 0%, rgba(255, 228, 236, 0.25) 70%)",
+                  boxShadow: "0 0 30px rgba(200, 180, 255, 0.25)",
                 }}
               >
-                <span className="text-3xl mb-2">{getPhaseEmoji()}</span>
+                <span className="text-2xl">{getPhaseEmoji()}</span>
               </div>
             </div>
 
             {/* Phase text */}
-            <div className="h-12">
-              <p
-                className="text-xl md:text-2xl font-medium text-foreground/70 animate-fade-in"
-                key={breathPhase}
-              >
-                {getPhaseText()}
-              </p>
-            </div>
+            <p
+              className="text-lg font-medium text-foreground/70 h-8"
+              key={breathPhase}
+            >
+              {getPhaseText()}
+            </p>
 
             {/* Cycle counter */}
             {cycleCount > 0 && (
-              <p className="text-sm text-muted-foreground/50">
-                {cycleCount} {cycleCount === 1 ? "breath" : "breaths"} completed
-                💜
+              <p className="text-xs text-muted-foreground/50">
+                {cycleCount} {cycleCount === 1 ? "breath" : "breaths"} 💜
               </p>
             )}
 
             {/* Close button */}
             <button
               onClick={handleClose}
-              className="soft-button px-8 py-3 rounded-full bg-white/60 text-foreground/70 font-medium hover:bg-white/80 transition-all shadow-sm"
+              className="soft-button px-6 py-2.5 rounded-full bg-white/60 text-foreground/70 font-medium text-sm hover:bg-white/80 transition-all shadow-sm"
             >
-              I feel better now ✨
+              I feel better ✨
             </button>
-
-            {/* Tip */}
-            <p className="text-xs text-muted-foreground/40 max-w-xs">
-              tip: try to complete at least 3 breathing cycles for best results
-            </p>
           </div>
         </div>
       )}
