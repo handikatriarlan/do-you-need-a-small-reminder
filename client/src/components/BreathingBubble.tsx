@@ -1,49 +1,97 @@
-import { useState } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 
-interface BreathingBubbleProps {
-  onOpen?: () => void
-}
-
-export function BreathingBubble({ onOpen }: BreathingBubbleProps) {
+export function BreathingBubble() {
   const [isOpen, setIsOpen] = useState(false)
-  const [breathPhase, setBreathPhase] = useState<"inhale" | "hold" | "exhale">(
-    "inhale"
-  )
+  const [breathPhase, setBreathPhase] = useState<
+    "inhale" | "hold" | "exhale" | "rest"
+  >("inhale")
+  const [cycleCount, setCycleCount] = useState(0)
+  const timerRef = useRef<NodeJS.Timeout | null>(null)
 
-  const handleOpen = () => {
+  const handleOpen = useCallback(() => {
     setIsOpen(true)
     setBreathPhase("inhale")
-    onOpen?.()
-    startBreathingCycle()
-  }
+    setCycleCount(0)
+  }, [])
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setIsOpen(false)
-  }
+    if (timerRef.current) {
+      clearTimeout(timerRef.current)
+    }
+  }, [])
 
-  const startBreathingCycle = () => {
-    // Inhale for 4s, hold for 4s, exhale for 4s
-    setBreathPhase("inhale")
+  // Breathing cycle effect
+  useEffect(() => {
+    if (!isOpen) return
 
-    const holdTimer = setTimeout(() => setBreathPhase("hold"), 4000)
-    const exhaleTimer = setTimeout(() => setBreathPhase("exhale"), 8000)
-    const resetTimer = setTimeout(() => setBreathPhase("inhale"), 12000)
+    const runCycle = () => {
+      // Inhale 4s -> Hold 4s -> Exhale 6s -> Rest 2s
+      setBreathPhase("inhale")
+
+      timerRef.current = setTimeout(() => {
+        setBreathPhase("hold")
+
+        timerRef.current = setTimeout(() => {
+          setBreathPhase("exhale")
+
+          timerRef.current = setTimeout(() => {
+            setBreathPhase("rest")
+            setCycleCount((prev) => prev + 1)
+
+            timerRef.current = setTimeout(() => {
+              runCycle()
+            }, 2000)
+          }, 6000)
+        }, 4000)
+      }, 4000)
+    }
+
+    runCycle()
 
     return () => {
-      clearTimeout(holdTimer)
-      clearTimeout(exhaleTimer)
-      clearTimeout(resetTimer)
+      if (timerRef.current) {
+        clearTimeout(timerRef.current)
+      }
     }
-  }
+  }, [isOpen])
 
   const getPhaseText = () => {
     switch (breathPhase) {
       case "inhale":
-        return "breathe in..."
+        return "breathe in slowly..."
       case "hold":
-        return "hold..."
+        return "hold gently..."
       case "exhale":
-        return "breathe out..."
+        return "breathe out slowly..."
+      case "rest":
+        return "rest..."
+    }
+  }
+
+  const getPhaseEmoji = () => {
+    switch (breathPhase) {
+      case "inhale":
+        return "🌬️"
+      case "hold":
+        return "✨"
+      case "exhale":
+        return "🍃"
+      case "rest":
+        return "💫"
+    }
+  }
+
+  const getBreathSize = () => {
+    switch (breathPhase) {
+      case "inhale":
+        return "scale-125"
+      case "hold":
+        return "scale-125"
+      case "exhale":
+        return "scale-75"
+      case "rest":
+        return "scale-100"
     }
   }
 
@@ -52,71 +100,107 @@ export function BreathingBubble({ onOpen }: BreathingBubbleProps) {
       {/* Floating bubble in corner */}
       <button
         onClick={handleOpen}
-        className="fixed bottom-24 right-4 md:bottom-8 md:right-8 w-12 h-12 rounded-full bg-gradient-to-br from-soft-blue to-lavender animate-breathe shadow-lg flex items-center justify-center z-30 hover:scale-105 transition-transform"
+        className="fixed bottom-20 right-4 md:bottom-8 md:right-8 w-14 h-14 rounded-full animate-breathe shadow-lg flex items-center justify-center z-30 hover:scale-110 active:scale-95 transition-transform border-2 border-white/30"
         aria-label="Open breathing exercise"
         style={{
-          background: "linear-gradient(135deg, #e8f4ff 0%, #f5e6ff 100%)",
+          background:
+            "linear-gradient(135deg, rgba(232, 244, 255, 0.9) 0%, rgba(245, 230, 255, 0.9) 100%)",
         }}
       >
-        <span className="text-lg">🫧</span>
+        <span className="text-2xl">🫧</span>
       </button>
 
       {/* Breathing overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 breathing-overlay z-50 flex flex-col items-center justify-center p-6"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center p-6 transition-all"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(245, 230, 255, 0.95) 0%, rgba(255, 248, 232, 0.95) 100%)",
+            backdropFilter: "blur(20px)",
+          }}
           onClick={handleClose}
         >
           <div
-            className="flex flex-col items-center gap-8"
+            className="flex flex-col items-center gap-8 max-w-sm text-center"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-2xl font-medium text-foreground/80">
-              breathe with me 🌬️
-            </h2>
-
-            {/* Breathing circle */}
-            <div
-              className={`w-32 h-32 md:w-40 md:h-40 rounded-full flex items-center justify-center transition-all duration-[4000ms] ease-in-out ${
-                breathPhase === "inhale"
-                  ? "scale-125"
-                  : breathPhase === "hold"
-                  ? "scale-125"
-                  : "scale-100"
-              }`}
-              style={{
-                background:
-                  "radial-gradient(circle, rgba(200, 180, 255, 0.4) 0%, rgba(255, 228, 236, 0.2) 70%)",
-              }}
-            >
-              <div
-                className={`w-20 h-20 md:w-24 md:h-24 rounded-full transition-all duration-[4000ms] ease-in-out ${
-                  breathPhase === "inhale"
-                    ? "scale-110"
-                    : breathPhase === "hold"
-                    ? "scale-110"
-                    : "scale-90"
-                }`}
-                style={{
-                  background:
-                    "radial-gradient(circle, rgba(200, 180, 255, 0.6) 0%, rgba(255, 228, 236, 0.3) 70%)",
-                }}
-              />
+            {/* Header */}
+            <div>
+              <h2 className="text-2xl md:text-3xl font-medium text-foreground/80 mb-2">
+                breathe with me 🌬️
+              </h2>
+              <p className="text-sm text-muted-foreground/60">
+                follow the circle to calm your mind
+              </p>
             </div>
 
-            <p
-              className="text-xl font-medium text-foreground/70 animate-fade-in"
-              key={breathPhase}
-            >
-              {getPhaseText()}
-            </p>
+            {/* Breathing circle */}
+            <div className="relative flex items-center justify-center w-48 h-48 md:w-56 md:h-56">
+              {/* Outer glow ring */}
+              <div
+                className={`absolute w-full h-full rounded-full transition-all ease-in-out ${
+                  breathPhase === "inhale" || breathPhase === "hold"
+                    ? "duration-[4000ms]"
+                    : breathPhase === "exhale"
+                    ? "duration-[6000ms]"
+                    : "duration-[2000ms]"
+                } ${getBreathSize()}`}
+                style={{
+                  background:
+                    "radial-gradient(circle, rgba(200, 180, 255, 0.2) 0%, transparent 70%)",
+                }}
+              />
 
+              {/* Main breathing circle */}
+              <div
+                className={`w-32 h-32 md:w-40 md:h-40 rounded-full flex flex-col items-center justify-center transition-all ease-in-out ${
+                  breathPhase === "inhale" || breathPhase === "hold"
+                    ? "duration-[4000ms]"
+                    : breathPhase === "exhale"
+                    ? "duration-[6000ms]"
+                    : "duration-[2000ms]"
+                } ${getBreathSize()}`}
+                style={{
+                  background:
+                    "radial-gradient(circle, rgba(200, 180, 255, 0.5) 0%, rgba(255, 228, 236, 0.3) 70%)",
+                  boxShadow: "0 0 40px rgba(200, 180, 255, 0.3)",
+                }}
+              >
+                <span className="text-3xl mb-2">{getPhaseEmoji()}</span>
+              </div>
+            </div>
+
+            {/* Phase text */}
+            <div className="h-12">
+              <p
+                className="text-xl md:text-2xl font-medium text-foreground/70 animate-fade-in"
+                key={breathPhase}
+              >
+                {getPhaseText()}
+              </p>
+            </div>
+
+            {/* Cycle counter */}
+            {cycleCount > 0 && (
+              <p className="text-sm text-muted-foreground/50">
+                {cycleCount} {cycleCount === 1 ? "breath" : "breaths"} completed
+                💜
+              </p>
+            )}
+
+            {/* Close button */}
             <button
               onClick={handleClose}
-              className="soft-button px-6 py-2 rounded-full bg-white/50 text-foreground/70 text-sm hover:bg-white/70 transition-colors"
+              className="soft-button px-8 py-3 rounded-full bg-white/60 text-foreground/70 font-medium hover:bg-white/80 transition-all shadow-sm"
             >
-              close
+              I feel better now ✨
             </button>
+
+            {/* Tip */}
+            <p className="text-xs text-muted-foreground/40 max-w-xs">
+              tip: try to complete at least 3 breathing cycles for best results
+            </p>
           </div>
         </div>
       )}

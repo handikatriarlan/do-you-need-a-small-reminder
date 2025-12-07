@@ -61,7 +61,8 @@ function App() {
       // If we couldn't find a new one after 5 tries, clear history and use what we got
       if (!data) {
         const res = await fetch(endpoint)
-        data = await res.json()
+        const fetchedData: Reminder = await res.json()
+        data = fetchedData
         // If all reminders shown, reset and start fresh
         if (shownRemindersRef.current.size >= 6) {
           shownRemindersRef.current.clear()

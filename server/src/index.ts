@@ -13,7 +13,7 @@ app.use(cors())
 
 // Reminder data store with psychologically-grounded, warm messages
 const reminders: Reminder[] = [
-  // Sad category
+  // Sad category (10 reminders)
   {
     message: "it's okay to feel sad. your feelings are valid.",
     emotion: "gentle",
@@ -50,8 +50,32 @@ const reminders: Reminder[] = [
     icon: "💛",
     category: "sad",
   },
+  {
+    message: "let yourself feel what you need to feel.",
+    emotion: "gentle",
+    icon: "🌙",
+    category: "sad",
+  },
+  {
+    message: "you're allowed to have hard days. this is one.",
+    emotion: "soft",
+    icon: "🌧️",
+    category: "sad",
+  },
+  {
+    message: "grief and sadness mean you loved deeply.",
+    emotion: "warm",
+    icon: "💗",
+    category: "sad",
+  },
+  {
+    message: "this feeling won't last forever. hold on.",
+    emotion: "gentle",
+    icon: "🌈",
+    category: "sad",
+  },
 
-  // Tired category
+  // Tired category (10 reminders)
   {
     message: "being tired doesn't mean you've failed.",
     emotion: "gentle",
@@ -88,8 +112,32 @@ const reminders: Reminder[] = [
     icon: "🌬️",
     category: "tired",
   },
+  {
+    message: "you've been carrying so much. set it down for now.",
+    emotion: "gentle",
+    icon: "🎒",
+    category: "tired",
+  },
+  {
+    message: "sleep is not a reward. it's a necessity.",
+    emotion: "soft",
+    icon: "😴",
+    category: "tired",
+  },
+  {
+    message: "give yourself permission to do less today.",
+    emotion: "warm",
+    icon: "🛋️",
+    category: "tired",
+  },
+  {
+    message: "you can't pour from an empty cup. rest.",
+    emotion: "gentle",
+    icon: "☕",
+    category: "tired",
+  },
 
-  // Overwhelmed category
+  // Overwhelmed category (10 reminders)
   {
     message: "one small step is still a step forward.",
     emotion: "gentle",
@@ -126,8 +174,32 @@ const reminders: Reminder[] = [
     icon: "💪",
     category: "overwhelmed",
   },
+  {
+    message: "break it down into smaller pieces. you've got this.",
+    emotion: "gentle",
+    icon: "🧩",
+    category: "overwhelmed",
+  },
+  {
+    message: "not everything needs your attention right now.",
+    emotion: "soft",
+    icon: "🎯",
+    category: "overwhelmed",
+  },
+  {
+    message: "pause. the world can wait for a moment.",
+    emotion: "warm",
+    icon: "⏸️",
+    category: "overwhelmed",
+  },
+  {
+    message: "you are not your to-do list.",
+    emotion: "gentle",
+    icon: "📝",
+    category: "overwhelmed",
+  },
 
-  // Numb category
+  // Numb category (10 reminders)
   {
     message: "feeling nothing is still feeling something.",
     emotion: "gentle",
@@ -164,8 +236,32 @@ const reminders: Reminder[] = [
     icon: "💗",
     category: "numb",
   },
+  {
+    message: "your worth isn't measured by how you feel.",
+    emotion: "gentle",
+    icon: "⭐",
+    category: "numb",
+  },
+  {
+    message: "emptiness can be a space for new things.",
+    emotion: "soft",
+    icon: "🌱",
+    category: "numb",
+  },
+  {
+    message: "you don't have to explain your feelings.",
+    emotion: "warm",
+    icon: "🤫",
+    category: "numb",
+  },
+  {
+    message: "just existing takes courage. you're brave.",
+    emotion: "gentle",
+    icon: "🦁",
+    category: "numb",
+  },
 
-  // Okay category
+  // Okay category (10 reminders)
   {
     message: "you're moving at your own pace, not anyone else's.",
     emotion: "gentle",
@@ -200,6 +296,30 @@ const reminders: Reminder[] = [
     message: "you're allowed to feel content. embrace it.",
     emotion: "warm",
     icon: "🌻",
+    category: "okay",
+  },
+  {
+    message: "being okay is a gift. savor it.",
+    emotion: "gentle",
+    icon: "🎁",
+    category: "okay",
+  },
+  {
+    message: "you've made it through 100% of your hard days.",
+    emotion: "soft",
+    icon: "💯",
+    category: "okay",
+  },
+  {
+    message: "your calm is a strength, not complacency.",
+    emotion: "warm",
+    icon: "🧘",
+    category: "okay",
+  },
+  {
+    message: "appreciate the quiet moments between storms.",
+    emotion: "gentle",
+    icon: "🌤️",
     category: "okay",
   },
 ]
@@ -262,6 +382,7 @@ app.get("/reminders/category/:id", (c) => {
 app.get("/", (c) => {
   return c.json({
     message: "Do You Need a Small Reminder? API",
+    totalReminders: reminders.length,
     endpoints: [
       "GET /api/reminder",
       "GET /api/reminders",
