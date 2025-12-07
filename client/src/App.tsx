@@ -6,7 +6,6 @@ import { ReminderCard } from "./components/ReminderCard"
 import { BreathingBubble } from "./components/BreathingBubble"
 import { ParticleBackground } from "./components/ParticleBackground"
 import { MoodSelector } from "./components/MoodSelector"
-import { LetItOut } from "./components/LetItOut"
 import { HugButton } from "./components/HugButton"
 
 const SERVER_URL = import.meta.env.DEV ? "http://localhost:3000/api" : "/api"
@@ -167,14 +166,6 @@ function App() {
               </Button>
               <HugButton />
             </div>
-          </section>
-
-          {/* Section 5: Let It Out */}
-          <section
-            className="w-full animate-fade-in"
-            style={{ animationDelay: "0.3s" }}
-          >
-            <LetItOut />
           </section>
         </div>
       </main>

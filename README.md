@@ -34,10 +34,6 @@ A guided breathing bubble with a 4-4-6-2 pattern (inhale-hold-exhale-rest) to he
 
 Send yourself a warm, animated virtual hug with a full-screen immersive animation.
 
-### ✍️ Let It Out
-
-Type what weighs you down and watch the words float away, symbolizing emotional release.
-
 ### ☁️ Cute Mascot
 
 An adorable cloud companion with mood-based expressions that responds to your interactions.
@@ -72,7 +68,6 @@ do-you-need-a-small-reminder/
 │   │   ├── components/        # React components
 │   │   │   ├── BreathingBubble.tsx
 │   │   │   ├── HugButton.tsx
-│   │   │   ├── LetItOut.tsx
 │   │   │   ├── Mascot.tsx
 │   │   │   ├── MoodSelector.tsx
 │   │   │   ├── ParticleBackground.tsx
