@@ -3,6 +3,46 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Custom Pastel Color Palette for Emotional Support Theme */
+:root {
+  --radius: 1rem;
+  
+  /* Soft pastel palette */
+  --lavender: #f5e6ff;
+  --soft-pink: #ffe4ec;
+  --warm-cream: #fff8e8;
+  --mint: #e8fff4;
+  --soft-blue: #e8f4ff;
+  --peach: #ffe8e0;
+  
+  /* Theme colors - gentle and calming */
+  --background: oklch(0.98 0.01 300);
+  --foreground: oklch(0.35 0.02 280);
+  --card: oklch(0.99 0.008 290);
+  --card-foreground: oklch(0.35 0.02 280);
+  --popover: oklch(0.99 0.008 290);
+  --popover-foreground: oklch(0.35 0.02 280);
+  --primary: oklch(0.75 0.12 290);
+  --primary-foreground: oklch(0.98 0.01 290);
+  --secondary: oklch(0.95 0.03 340);
+  --secondary-foreground: oklch(0.4 0.05 340);
+  --muted: oklch(0.95 0.02 280);
+  --muted-foreground: oklch(0.5 0.03 280);
+  --accent: oklch(0.88 0.08 290);
+  --accent-foreground: oklch(0.35 0.05 290);
+  --destructive: oklch(0.65 0.2 25);
+  --border: oklch(0.9 0.02 290);
+  --input: oklch(0.92 0.02 290);
+  --ring: oklch(0.75 0.1 290);
+  
+  /* Chart colors - soft and harmonious */
+  --chart-1: oklch(0.75 0.15 290);
+  --chart-2: oklch(0.75 0.12 340);
+  --chart-3: oklch(0.75 0.1 160);
+  --chart-4: oklch(0.8 0.12 80);
+  --chart-5: oklch(0.72 0.1 220);
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -31,90 +71,287 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  
+  /* Custom colors for our app */
+  --color-lavender: var(--lavender);
+  --color-soft-pink: var(--soft-pink);
+  --color-warm-cream: var(--warm-cream);
+  --color-mint: var(--mint);
+  --color-soft-blue: var(--soft-blue);
+  --color-peach: var(--peach);
 }
 
-:root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+/* Mood-based backgrounds */
+.mood-sad {
+  background: linear-gradient(180deg, var(--soft-blue) 0%, var(--lavender) 100%);
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+.mood-tired {
+  background: linear-gradient(180deg, var(--lavender) 0%, var(--warm-cream) 100%);
 }
 
+.mood-overwhelmed {
+  background: linear-gradient(180deg, var(--mint) 0%, var(--soft-blue) 100%);
+}
+
+.mood-numb {
+  background: linear-gradient(180deg, var(--soft-pink) 0%, var(--lavender) 100%);
+}
+
+.mood-okay {
+  background: linear-gradient(180deg, var(--warm-cream) 0%, var(--soft-pink) 100%);
+}
+
+/* Custom animations */
+@keyframes breathe {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.9;
+  }
+}
+
+@keyframes float-up {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) scale(0.8);
+    opacity: 0;
+  }
+}
+
+@keyframes wiggle {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
+}
+
+@keyframes gentle-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes particle-rise {
+  0% {
+    transform: translateY(100vh) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.5;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-10vh) translateX(20px);
+    opacity: 0;
+  }
+}
+
+@keyframes soft-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(200, 170, 230, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(200, 170, 230, 0.5);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hug-pulse {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+@keyframes mascot-blink {
+  0%, 95%, 100% {
+    transform: scaleY(1);
+  }
+  97% {
+    transform: scaleY(0.1);
+  }
+}
+
+/* Animation utility classes */
+.animate-breathe {
+  animation: breathe 4s ease-in-out infinite;
+}
+
+.animate-float-up {
+  animation: float-up 2s ease-out forwards;
+}
+
+.animate-wiggle {
+  animation: wiggle 0.5s ease-in-out;
+}
+
+.animate-gentle-float {
+  animation: gentle-float 3s ease-in-out infinite;
+}
+
+.animate-particle-rise {
+  animation: particle-rise 8s linear infinite;
+}
+
+.animate-soft-glow {
+  animation: soft-glow 3s ease-in-out infinite;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
+.animate-hug-pulse {
+  animation: hug-pulse 1.5s ease-out forwards;
+}
+
+.animate-mascot-blink {
+  animation: mascot-blink 4s ease-in-out infinite;
+}
+
+/* Base styles */
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  
   body {
     @apply bg-background text-foreground;
+    font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
   }
+  
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Particle container */
+.particle-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  bottom: -20px;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, rgba(200, 180, 255, 0.6) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(1px);
+}
+
+/* Breathing guide overlay */
+.breathing-overlay {
+  backdrop-filter: blur(10px);
+  background: rgba(245, 230, 255, 0.85);
+}
+
+/* Hug overlay effect */
+.hug-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hug-circle {
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(255, 200, 220, 0.6) 0%, rgba(255, 228, 236, 0.3) 50%, transparent 70%);
+  border-radius: 50%;
+}
+
+/* Soft button hover states */
+.soft-button {
+  transition: all 0.3s ease;
+}
+
+.soft-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(200, 170, 230, 0.3);
+}
+
+.soft-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(200, 170, 230, 0.2);
+}
+
+/* Mascot expression states */
+.mascot-happy {
+  --eye-curve: 50% 50% 50% 50% / 0% 0% 100% 100%;
+}
+
+.mascot-sleepy {
+  --eye-curve: 50% 50% 50% 50% / 50% 50% 50% 50%;
+}
+
+.mascot-neutral {
+  --eye-curve: 50% 50% 50% 50% / 50% 50% 50% 50%;
+}
+
+/* Glass morphism card effect */
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Responsive text sizing */
+.reminder-text {
+  font-size: clamp(1.1rem, 4vw, 1.5rem);
+  line-height: 1.6;
+}
+
+/* Safe area padding for mobile devices */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 16px);
 }
