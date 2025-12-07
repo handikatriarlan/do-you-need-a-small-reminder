@@ -38,10 +38,6 @@ Send yourself a warm, animated virtual hug with a full-screen immersive animatio
 
 Type what weighs you down and watch the words float away, symbolizing emotional release.
 
-### 🔊 Sound Effects
-
-Optional soft chime sounds when receiving new reminders for a more immersive experience.
-
 ### ☁️ Cute Mascot
 
 An adorable cloud companion with mood-based expressions that responds to your interactions.
@@ -81,7 +77,6 @@ do-you-need-a-small-reminder/
 │   │   │   ├── MoodSelector.tsx
 │   │   │   ├── ParticleBackground.tsx
 │   │   │   ├── ReminderCard.tsx
-│   │   │   └── SoundToggle.tsx
 │   │   ├── App.tsx            # Main application component
 │   │   ├── index.css          # Global styles & animations
 │   │   └── main.tsx           # Entry point
