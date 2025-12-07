@@ -22,14 +22,14 @@ export function HugButton() {
     <div className="flex flex-col items-center gap-1">
       <button
         onClick={handleHug}
-        className="soft-button w-full sm:w-auto px-5 py-3 rounded-2xl text-foreground/80 font-medium text-sm shadow-sm hover:shadow-md transition-all active:scale-95"
+        className="soft-button w-full px-5 py-3 rounded-2xl text-foreground/80 font-medium text-sm shadow-sm hover:shadow-md transition-all active:scale-95"
         style={{
-          background: "linear-gradient(135deg, #ffe4ec 0%, #ffe8e0 100%)",
+          background: "linear-gradient(135deg, rgba(253, 205, 219, 1)%, rgba(255, 232, 224, 1) 100%)",
         }}
         disabled={isHugging}
         aria-label="Send yourself a virtual hug"
       >
-        {isHugging ? "sending love... 🤗" : "send a small hug 🤗"}
+        {isHugging ? "sending love..." : "send a small hug"}
       </button>
 
       {/* Hug message - with better contrast */}

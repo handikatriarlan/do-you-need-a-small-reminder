@@ -185,7 +185,7 @@ function App() {
               <Button
                 onClick={fetchReminder}
                 disabled={isLoading}
-                className="soft-button w-full py-4 h-auto rounded-2xl bg-primary text-primary-foreground font-medium text-base shadow-lg hover:shadow-xl transition-all active:scale-[0.98]"
+                className="soft-button w-full py-3 h-auto rounded-2xl bg-primary text-primary-foreground font-medium text-base shadow-lg hover:shadow-xl transition-all active:scale-[0.98]"
               >
                 {isLoading ? (
                   <span className="flex items-center justify-center gap-2">
@@ -193,9 +193,9 @@ function App() {
                     finding...
                   </span>
                 ) : reminder ? (
-                  "another reminder ✨"
+                  "another reminder"
                 ) : (
-                  "show me a reminder 💜"
+                  "show me a reminder"
                 )}
               </Button>
               <HugButton />
