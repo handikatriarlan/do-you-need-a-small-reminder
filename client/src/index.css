@@ -478,3 +478,48 @@
     backdrop-filter: blur(8px);
   }
 }
+
+/* Additional cute animations */
+@keyframes bounce-soft {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-bounce-soft {
+  animation: bounce-soft 0.8s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 2s linear infinite;
+}
+
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(200, 180, 230, 0.15);
+}
+
+/* Scale for hover */
+.hover-scale-102:hover {
+  transform: scale(1.02);
+}

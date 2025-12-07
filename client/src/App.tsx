@@ -15,6 +15,7 @@ const SERVER_URL = import.meta.env.DEV ? "http://localhost:3000/api" : "/api"
 
 function App() {
   const [reminder, setReminder] = useState<Reminder | null>(null)
+  const [reminderKey, setReminderKey] = useState(0) // Key for triggering re-animation
   const [isLoading, setIsLoading] = useState(false)
   const [mood, setMood] = useState<Mood>("okay")
   const [isWiggling, setIsWiggling] = useState(false)
@@ -56,12 +57,11 @@ function App() {
         attempts++
       }
 
-      // If we couldn't find a new one after 5 tries, clear history and use what we got
+      // If we couldn't find a new one after 5 tries, use what we got
       if (!data) {
         const res = await fetch(endpoint)
         const fetchedData: Reminder = await res.json()
         data = fetchedData
-        // If all reminders shown, reset and start fresh
         if (shownRemindersRef.current.size >= 6) {
           shownRemindersRef.current.clear()
         }
@@ -69,6 +69,7 @@ function App() {
       }
 
       setReminder(data)
+      setReminderKey((prev) => prev + 1) // Trigger new animation
 
       // Play chime if sound is enabled
       if (soundEnabled && audioContextRef.current) {
@@ -81,18 +82,18 @@ function App() {
     }
   }, [mood, soundEnabled])
 
-  const handleSoundChange = useCallback((enabled: boolean) => {
-    setSoundEnabled(enabled)
-    if (enabled && !audioContextRef.current) {
-      audioContextRef.current = new (window.AudioContext ||
-        (window as unknown as { webkitAudioContext: typeof AudioContext })
-          .webkitAudioContext)()
-    }
-  }, [])
+  const handleSoundChange = useCallback(
+    (enabled: boolean, audioContext: AudioContext | null) => {
+      setSoundEnabled(enabled)
+      audioContextRef.current = audioContext
+    },
+    []
+  )
 
   const handleMoodChange = useCallback((newMood: Mood) => {
     setMood(newMood)
     setReminder(null)
+    setReminderKey((prev) => prev + 1)
   }, [])
 
   const handleWiggleEnd = useCallback(() => {
@@ -117,7 +118,7 @@ function App() {
 
   return (
     <div
-      className={`min-h-screen min-h-dvh ${getMoodBackgroundClass()} transition-all duration-700 relative overflow-x-hidden`}
+      className={`min-h-screen min-h-dvh ${getMoodBackgroundClass()} transition-all duration-500 relative overflow-x-hidden`}
     >
       {/* Particle background */}
       <ParticleBackground />
@@ -125,14 +126,14 @@ function App() {
       {/* Sound toggle */}
       <SoundToggle onSoundChange={handleSoundChange} />
 
-      {/* Breathing bubble - fixed position */}
+      {/* Breathing bubble - bottom right corner */}
       <BreathingBubble />
 
-      {/* Main content - mobile-first vertical layout */}
-      <main className="relative z-10 flex flex-col items-center min-h-screen min-h-dvh px-4 pt-6 pb-16 safe-area-top">
-        <div className="flex flex-col items-center w-full max-w-sm mx-auto flex-1">
-          {/* Header section */}
-          <div className="flex flex-col items-center gap-2 mb-5">
+      {/* Main content */}
+      <main className="relative z-10 flex flex-col items-center justify-center min-h-screen min-h-dvh px-4 py-4 safe-area-top safe-area-bottom">
+        <div className="flex flex-col items-center w-full max-w-sm mx-auto">
+          {/* Header section with entrance animation */}
+          <div className="flex flex-col items-center gap-2 mb-4 animate-fade-in">
             {/* Mascot */}
             <Mascot
               isWiggling={isWiggling}
@@ -141,31 +142,40 @@ function App() {
             />
 
             {/* Title */}
-            <h1 className="text-lg sm:text-xl md:text-2xl font-semibold text-foreground/85 text-center leading-tight">
+            <h1 className="text-lg sm:text-xl font-semibold text-foreground/85 text-center leading-tight">
               do you need a small reminder?
             </h1>
-            <p className="text-xs text-muted-foreground/60">
-              a cozy place for comfort ✨
-            </p>
             <SoftGreeting />
           </div>
 
-          {/* Mood selector */}
-          <div className="w-full mb-5">
+          {/* Mood selector with animation */}
+          <div
+            className="w-full mb-4 animate-fade-in"
+            style={{ animationDelay: "0.1s" }}
+          >
             <MoodSelector selectedMood={mood} onMoodChange={handleMoodChange} />
           </div>
 
-          {/* Reminder card */}
-          <div className="w-full mb-5">
-            <ReminderCard reminder={reminder} isLoading={isLoading} />
+          {/* Reminder card - fixed height to prevent layout shift */}
+          <div className="w-full mb-4 min-h-[140px] flex items-center">
+            <div className="w-full">
+              <ReminderCard
+                reminder={reminder}
+                isLoading={isLoading}
+                key={reminderKey}
+              />
+            </div>
           </div>
 
-          {/* Action buttons - stacked on mobile */}
-          <div className="flex flex-col gap-3 w-full mb-5">
+          {/* Action buttons */}
+          <div
+            className="flex flex-col gap-2.5 w-full mb-4 animate-fade-in"
+            style={{ animationDelay: "0.2s" }}
+          >
             <Button
               onClick={fetchReminder}
               disabled={isLoading}
-              className="soft-button w-full px-6 py-3 h-auto rounded-2xl bg-primary text-primary-foreground font-medium shadow-md hover:shadow-lg transition-all text-sm"
+              className="soft-button w-full px-6 py-3.5 h-auto rounded-2xl bg-primary text-primary-foreground font-medium shadow-lg hover:shadow-xl transition-all text-base active:scale-[0.98]"
             >
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -173,9 +183,9 @@ function App() {
                   finding...
                 </span>
               ) : reminder ? (
-                "show another reminder"
+                "show another reminder ✨"
               ) : (
-                "show me a reminder"
+                "show me a reminder 💜"
               )}
             </Button>
 
@@ -183,27 +193,28 @@ function App() {
           </div>
 
           {/* Let it out section */}
-          <div className="w-full">
+          <div
+            className="w-full animate-fade-in"
+            style={{ animationDelay: "0.3s" }}
+          >
             <LetItOut />
           </div>
         </div>
       </main>
 
-      {/* Footer - single line */}
-      <footer className="fixed bottom-0 left-0 right-0 z-20 py-3 safe-area-bottom">
-        <div className="text-center">
-          <p className="text-xs text-muted-foreground/40">
-            made with 💜 by{" "}
-            <a
-              href="https://handikatriarlan.dev"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-primary/60 transition-colors underline-offset-2 hover:underline"
-            >
-              handikatriarlan
-            </a>
-          </p>
-        </div>
+      {/* Footer */}
+      <footer className="fixed bottom-0 left-0 right-0 z-20 py-2 bg-gradient-to-t from-white/20 to-transparent">
+        <p className="text-center text-xs text-muted-foreground/40">
+          made with 💜 by{" "}
+          <a
+            href="https://handikatriarlan.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-primary/60 transition-colors underline-offset-2 hover:underline"
+          >
+            handikatriarlan
+          </a>
+        </p>
       </footer>
     </div>
   )

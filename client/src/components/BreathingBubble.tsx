@@ -26,7 +26,6 @@ export function BreathingBubble() {
     if (!isOpen) return
 
     const runCycle = () => {
-      // Inhale 4s -> Hold 4s -> Exhale 6s -> Rest 2s
       setBreathPhase("inhale")
 
       timerRef.current = setTimeout(() => {
@@ -97,10 +96,10 @@ export function BreathingBubble() {
 
   return (
     <>
-      {/* Floating bubble - bottom right, above footer */}
+      {/* Floating bubble - fixed bottom right corner */}
       <button
         onClick={handleOpen}
-        className="fixed bottom-16 right-4 w-12 h-12 rounded-full animate-breathe shadow-lg flex items-center justify-center z-30 hover:scale-110 active:scale-95 transition-transform border border-white/40"
+        className="fixed bottom-14 right-4 w-12 h-12 rounded-full animate-breathe shadow-lg flex items-center justify-center z-40 hover:scale-110 active:scale-95 transition-transform border border-white/50"
         aria-label="Open breathing exercise"
         style={{
           background:
@@ -113,10 +112,10 @@ export function BreathingBubble() {
       {/* Breathing overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center p-4 transition-all"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center p-4 animate-fade-in"
           style={{
             background:
-              "linear-gradient(180deg, rgba(245, 230, 255, 0.97) 0%, rgba(255, 248, 232, 0.97) 100%)",
+              "linear-gradient(180deg, rgba(245, 230, 255, 0.98) 0%, rgba(255, 248, 232, 0.98) 100%)",
             backdropFilter: "blur(20px)",
           }}
           onClick={handleClose}
@@ -125,9 +124,8 @@ export function BreathingBubble() {
             className="flex flex-col items-center gap-6 max-w-xs text-center"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Header */}
             <div>
-              <h2 className="text-xl md:text-2xl font-medium text-foreground/80 mb-1">
+              <h2 className="text-xl font-medium text-foreground/80 mb-1">
                 breathe with me 🌬️
               </h2>
               <p className="text-xs text-muted-foreground/60">
@@ -136,8 +134,7 @@ export function BreathingBubble() {
             </div>
 
             {/* Breathing circle */}
-            <div className="relative flex items-center justify-center w-40 h-40">
-              {/* Outer glow ring */}
+            <div className="relative flex items-center justify-center w-36 h-36">
               <div
                 className={`absolute w-full h-full rounded-full transition-all ease-in-out ${
                   breathPhase === "inhale" || breathPhase === "hold"
@@ -152,9 +149,8 @@ export function BreathingBubble() {
                 }}
               />
 
-              {/* Main breathing circle */}
               <div
-                className={`w-28 h-28 rounded-full flex flex-col items-center justify-center transition-all ease-in-out ${
+                className={`w-24 h-24 rounded-full flex flex-col items-center justify-center transition-all ease-in-out ${
                   breathPhase === "inhale" || breathPhase === "hold"
                     ? "duration-[4000ms]"
                     : breathPhase === "exhale"
@@ -171,25 +167,22 @@ export function BreathingBubble() {
               </div>
             </div>
 
-            {/* Phase text */}
             <p
-              className="text-lg font-medium text-foreground/70 h-8"
+              className="text-lg font-medium text-foreground/70 h-7"
               key={breathPhase}
             >
               {getPhaseText()}
             </p>
 
-            {/* Cycle counter */}
             {cycleCount > 0 && (
-              <p className="text-xs text-muted-foreground/50">
+              <p className="text-xs text-muted-foreground/50 animate-fade-in">
                 {cycleCount} {cycleCount === 1 ? "breath" : "breaths"} 💜
               </p>
             )}
 
-            {/* Close button */}
             <button
               onClick={handleClose}
-              className="soft-button px-6 py-2.5 rounded-full bg-white/60 text-foreground/70 font-medium text-sm hover:bg-white/80 transition-all shadow-sm"
+              className="soft-button px-6 py-2.5 rounded-full bg-white/70 text-foreground/70 font-medium text-sm hover:bg-white/90 transition-all shadow-sm active:scale-95"
             >
               I feel better ✨
             </button>

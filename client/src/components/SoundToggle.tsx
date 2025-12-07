@@ -1,26 +1,16 @@
-import { useState, useCallback, useEffect, useRef } from "react"
+import { useState, useCallback, useRef } from "react"
 
 interface SoundToggleProps {
-  onSoundChange?: (enabled: boolean) => void
+  onSoundChange?: (enabled: boolean, audioContext: AudioContext | null) => void
 }
 
 export function SoundToggle({ onSoundChange }: SoundToggleProps) {
   const [soundEnabled, setSoundEnabled] = useState(false)
   const audioContextRef = useRef<AudioContext | null>(null)
 
-  useEffect(() => {
-    // Initialize audio context on first user interaction
-    return () => {
-      if (audioContextRef.current) {
-        audioContextRef.current.close()
-      }
-    }
-  }, [])
-
   const handleToggle = useCallback(() => {
     const newValue = !soundEnabled
     setSoundEnabled(newValue)
-    onSoundChange?.(newValue)
 
     // Initialize audio context if enabling sound
     if (newValue && !audioContextRef.current) {
@@ -28,15 +18,27 @@ export function SoundToggle({ onSoundChange }: SoundToggleProps) {
         (window as unknown as { webkitAudioContext: typeof AudioContext })
           .webkitAudioContext)()
     }
+
+    // Resume audio context if it was suspended
+    if (newValue && audioContextRef.current?.state === "suspended") {
+      audioContextRef.current.resume()
+    }
+
+    onSoundChange?.(newValue, audioContextRef.current)
+
+    // Play a test sound when enabling
+    if (newValue && audioContextRef.current) {
+      playChime(audioContextRef.current)
+    }
   }, [soundEnabled, onSoundChange])
 
   return (
     <button
       onClick={handleToggle}
-      className={`fixed top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center z-30 transition-all ${
+      className={`fixed top-4 right-4 w-11 h-11 rounded-full flex items-center justify-center z-30 transition-all duration-300 ${
         soundEnabled
-          ? "bg-primary/20 text-foreground shadow-sm"
-          : "bg-white/40 text-foreground/50"
+          ? "bg-primary/25 text-foreground shadow-md scale-110"
+          : "bg-white/50 text-foreground/50 hover:bg-white/70 hover:scale-105"
       }`}
       aria-label={soundEnabled ? "Disable sound" : "Enable sound"}
       aria-pressed={soundEnabled}
@@ -51,6 +53,7 @@ export function SoundToggle({ onSoundChange }: SoundToggleProps) {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
+          className="animate-pulse"
         >
           <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
           <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
@@ -76,25 +79,40 @@ export function SoundToggle({ onSoundChange }: SoundToggleProps) {
   )
 }
 
-// Export a function to play the chime sound
+// Improved chime sound - softer and more pleasant
 export function playChime(audioContext: AudioContext | null) {
-  if (!audioContext) return
+  if (!audioContext || audioContext.state !== "running") return
 
-  const oscillator = audioContext.createOscillator()
-  const gainNode = audioContext.createGain()
+  try {
+    // Create a more pleasant bell-like sound
+    const oscillator1 = audioContext.createOscillator()
+    const oscillator2 = audioContext.createOscillator()
+    const gainNode = audioContext.createGain()
 
-  oscillator.connect(gainNode)
-  gainNode.connect(audioContext.destination)
+    oscillator1.connect(gainNode)
+    oscillator2.connect(gainNode)
+    gainNode.connect(audioContext.destination)
 
-  // Soft, gentle chime frequency
-  oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime) // C5
-  oscillator.type = "sine"
+    // Two harmonics for a richer sound
+    oscillator1.frequency.setValueAtTime(880, audioContext.currentTime) // A5
+    oscillator1.type = "sine"
 
-  // Very short, soft sound
-  gainNode.gain.setValueAtTime(0, audioContext.currentTime)
-  gainNode.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 0.05)
-  gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.3)
+    oscillator2.frequency.setValueAtTime(1320, audioContext.currentTime) // E6
+    oscillator2.type = "sine"
 
-  oscillator.start(audioContext.currentTime)
-  oscillator.stop(audioContext.currentTime + 0.3)
+    // Gentle envelope
+    gainNode.gain.setValueAtTime(0, audioContext.currentTime)
+    gainNode.gain.linearRampToValueAtTime(0.08, audioContext.currentTime + 0.02)
+    gainNode.gain.exponentialRampToValueAtTime(
+      0.001,
+      audioContext.currentTime + 0.5
+    )
+
+    oscillator1.start(audioContext.currentTime)
+    oscillator2.start(audioContext.currentTime)
+    oscillator1.stop(audioContext.currentTime + 0.5)
+    oscillator2.stop(audioContext.currentTime + 0.5)
+  } catch (e) {
+    console.warn("Failed to play chime:", e)
+  }
 }
