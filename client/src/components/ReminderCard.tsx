@@ -48,7 +48,7 @@ export function ReminderCard({ reminder, isLoading }: ReminderCardProps) {
         </p>
         <div className="flex items-center gap-2 text-xs text-muted-foreground/50 animate-reminder-label">
           <span className="w-1 h-1 rounded-full bg-muted-foreground/20" />
-          <span>a {reminder.emotion} reminder</span>
+          {/* <span>a {reminder.emotion} reminder</span> */}
           <span className="w-1 h-1 rounded-full bg-muted-foreground/20" />
         </div>
       </div>

@@ -9,7 +9,6 @@ import { MoodSelector } from "./components/MoodSelector"
 import { LetItOut } from "./components/LetItOut"
 import { HugButton } from "./components/HugButton"
 import { SoundToggle, playChime } from "./components/SoundToggle"
-import { SoftGreeting } from "./components/SoftGreeting"
 
 const SERVER_URL = import.meta.env.DEV ? "http://localhost:3000/api" : "/api"
 
@@ -145,7 +144,9 @@ function App() {
             <h1 className="text-lg sm:text-xl font-semibold text-foreground/85 text-center leading-tight">
               do you need a small reminder?
             </h1>
-            <SoftGreeting />
+            <p className="text-xs text-muted-foreground/50">
+              your healing space 🤍
+            </p>
           </div>
 
           {/* Mood selector with animation */}
