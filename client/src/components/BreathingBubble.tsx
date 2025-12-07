@@ -21,7 +21,6 @@ export function BreathingBubble() {
     }
   }, [])
 
-  // Breathing cycle effect
   useEffect(() => {
     if (!isOpen) return
 
@@ -96,17 +95,17 @@ export function BreathingBubble() {
 
   return (
     <>
-      {/* Floating bubble - fixed bottom right corner */}
+      {/* Floating bubble - fixed at very bottom right */}
       <button
         onClick={handleOpen}
-        className="fixed bottom-14 right-4 w-12 h-12 rounded-full animate-breathe shadow-lg flex items-center justify-center z-40 hover:scale-110 active:scale-95 transition-transform border border-white/50"
+        className="fixed bottom-5 right-5 w-14 h-14 rounded-full animate-breathe shadow-lg flex items-center justify-center z-40 hover:scale-110 active:scale-95 transition-transform border border-white/50"
         aria-label="Open breathing exercise"
         style={{
           background:
             "linear-gradient(135deg, rgba(232, 244, 255, 0.95) 0%, rgba(245, 230, 255, 0.95) 100%)",
         }}
       >
-        <span className="text-xl">🫧</span>
+        <span className="text-2xl">🫧</span>
       </button>
 
       {/* Breathing overlay */}
@@ -133,7 +132,6 @@ export function BreathingBubble() {
               </p>
             </div>
 
-            {/* Breathing circle */}
             <div className="relative flex items-center justify-center w-36 h-36">
               <div
                 className={`absolute w-full h-full rounded-full transition-all ease-in-out ${

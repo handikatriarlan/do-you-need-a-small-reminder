@@ -1,35 +1,16 @@
-import { useState, useCallback, useRef } from "react"
+import { useState, useCallback } from "react"
 
 interface SoundToggleProps {
-  onSoundChange?: (enabled: boolean, audioContext: AudioContext | null) => void
+  onSoundChange?: (enabled: boolean) => void
 }
 
 export function SoundToggle({ onSoundChange }: SoundToggleProps) {
   const [soundEnabled, setSoundEnabled] = useState(false)
-  const audioContextRef = useRef<AudioContext | null>(null)
 
   const handleToggle = useCallback(() => {
     const newValue = !soundEnabled
     setSoundEnabled(newValue)
-
-    // Initialize audio context if enabling sound
-    if (newValue && !audioContextRef.current) {
-      audioContextRef.current = new (window.AudioContext ||
-        (window as unknown as { webkitAudioContext: typeof AudioContext })
-          .webkitAudioContext)()
-    }
-
-    // Resume audio context if it was suspended
-    if (newValue && audioContextRef.current?.state === "suspended") {
-      audioContextRef.current.resume()
-    }
-
-    onSoundChange?.(newValue, audioContextRef.current)
-
-    // Play a test sound when enabling
-    if (newValue && audioContextRef.current) {
-      playChime(audioContextRef.current)
-    }
+    onSoundChange?.(newValue)
   }, [soundEnabled, onSoundChange])
 
   return (
@@ -37,7 +18,7 @@ export function SoundToggle({ onSoundChange }: SoundToggleProps) {
       onClick={handleToggle}
       className={`fixed top-4 right-4 w-11 h-11 rounded-full flex items-center justify-center z-30 transition-all duration-300 ${
         soundEnabled
-          ? "bg-primary/25 text-foreground shadow-md scale-110"
+          ? "bg-primary/25 text-foreground shadow-md scale-105"
           : "bg-white/50 text-foreground/50 hover:bg-white/70 hover:scale-105"
       }`}
       aria-label={soundEnabled ? "Disable sound" : "Enable sound"}
@@ -77,42 +58,4 @@ export function SoundToggle({ onSoundChange }: SoundToggleProps) {
       )}
     </button>
   )
-}
-
-// Improved chime sound - softer and more pleasant
-export function playChime(audioContext: AudioContext | null) {
-  if (!audioContext || audioContext.state !== "running") return
-
-  try {
-    // Create a more pleasant bell-like sound
-    const oscillator1 = audioContext.createOscillator()
-    const oscillator2 = audioContext.createOscillator()
-    const gainNode = audioContext.createGain()
-
-    oscillator1.connect(gainNode)
-    oscillator2.connect(gainNode)
-    gainNode.connect(audioContext.destination)
-
-    // Two harmonics for a richer sound
-    oscillator1.frequency.setValueAtTime(880, audioContext.currentTime) // A5
-    oscillator1.type = "sine"
-
-    oscillator2.frequency.setValueAtTime(1320, audioContext.currentTime) // E6
-    oscillator2.type = "sine"
-
-    // Gentle envelope
-    gainNode.gain.setValueAtTime(0, audioContext.currentTime)
-    gainNode.gain.linearRampToValueAtTime(0.08, audioContext.currentTime + 0.02)
-    gainNode.gain.exponentialRampToValueAtTime(
-      0.001,
-      audioContext.currentTime + 0.5
-    )
-
-    oscillator1.start(audioContext.currentTime)
-    oscillator2.start(audioContext.currentTime)
-    oscillator1.stop(audioContext.currentTime + 0.5)
-    oscillator2.stop(audioContext.currentTime + 0.5)
-  } catch (e) {
-    console.warn("Failed to play chime:", e)
-  }
 }

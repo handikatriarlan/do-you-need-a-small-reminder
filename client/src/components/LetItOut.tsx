@@ -8,7 +8,6 @@ interface FloatingWord {
 export function LetItOut() {
   const [inputValue, setInputValue] = useState("")
   const [floatingWords, setFloatingWords] = useState<FloatingWord[]>([])
-  const [showHint, setShowHint] = useState(true)
 
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {
@@ -22,9 +21,7 @@ export function LetItOut() {
 
       setFloatingWords((prev) => [...prev, newWord])
       setInputValue("")
-      setShowHint(false)
 
-      // Remove the word after animation completes
       setTimeout(() => {
         setFloatingWords((prev) => prev.filter((w) => w.id !== newWord.id))
       }, 2500)
@@ -33,9 +30,16 @@ export function LetItOut() {
   )
 
   return (
-    <div className="w-full max-w-xs mx-auto px-2">
-      {/* Floating words area - positioned above */}
-      <div className="relative h-16 mb-2 overflow-hidden pointer-events-none">
+    <div className="w-full">
+      {/* Divider */}
+      <div className="flex items-center gap-3 mb-4">
+        <div className="flex-1 h-px bg-foreground/10" />
+        <p className="text-xs text-muted-foreground/50">let it go ✨</p>
+        <div className="flex-1 h-px bg-foreground/10" />
+      </div>
+
+      {/* Floating words area */}
+      <div className="relative h-14 mb-2 overflow-hidden pointer-events-none">
         {floatingWords.map((word) => (
           <div
             key={word.id}
@@ -46,25 +50,20 @@ export function LetItOut() {
         ))}
       </div>
 
-      {/* Label */}
-      <p className="text-sm text-center text-muted-foreground/80 mb-3">
-        {showHint ? "let go of what weighs you down ✨" : "let it out ✨"}
-      </p>
-
       {/* Input form */}
       <form onSubmit={handleSubmit} className="relative">
         <input
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          placeholder="type a feeling..."
+          placeholder="type what weighs you down..."
           maxLength={30}
-          className="w-full px-5 py-3 rounded-2xl bg-white/60 border border-white/40 text-center text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:bg-white/80 transition-all text-base shadow-sm"
+          className="w-full px-5 py-3.5 rounded-2xl bg-white/60 border border-white/40 text-center text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:bg-white/80 transition-all text-base shadow-sm"
           aria-label="Type a feeling to release"
         />
         <button
           type="submit"
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/50 hover:text-primary/70 transition-colors p-1"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/50 hover:text-primary/70 transition-colors p-1.5 rounded-full hover:bg-white/50"
           aria-label="Release the word"
         >
           <svg
@@ -82,12 +81,9 @@ export function LetItOut() {
         </button>
       </form>
 
-      {/* Subtle hint */}
-      {showHint && (
-        <p className="text-xs text-center text-muted-foreground/40 mt-2">
-          press enter to release
-        </p>
-      )}
+      <p className="text-xs text-center text-muted-foreground/40 mt-2">
+        press enter to release
+      </p>
     </div>
   )
 }

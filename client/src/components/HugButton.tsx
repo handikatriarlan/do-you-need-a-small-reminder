@@ -93,7 +93,7 @@ export function HugButton() {
           </div>
 
           {/* Floating hearts */}
-          <div className="absolute inset-0 overflow-hidden">
+          {/* <div className="absolute inset-0 overflow-hidden">
             {[...Array(8)].map((_, i) => (
               <span
                 key={i}
@@ -107,7 +107,7 @@ export function HugButton() {
                 💕
               </span>
             ))}
-          </div>
+          </div> */}
         </div>
       )}
     </div>
