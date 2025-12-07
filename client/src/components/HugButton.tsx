@@ -29,7 +29,7 @@ export function HugButton() {
         disabled={isHugging}
         aria-label="Send yourself a virtual hug"
       >
-        {isHugging ? "sending love... 🤗" : "send me a small hug 🤗"}
+        {isHugging ? "sending love... 🤗" : "send a small hug 🤗"}
       </button>
 
       {/* Hug message - with better contrast */}

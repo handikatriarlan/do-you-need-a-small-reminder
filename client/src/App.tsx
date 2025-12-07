@@ -183,9 +183,9 @@ function App() {
                   finding...
                 </span>
               ) : reminder ? (
-                "show another reminder ✨"
+                "click me again"
               ) : (
-                "show me a reminder 💜"
+                "click me"
               )}
             </Button>
 
@@ -203,7 +203,7 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="fixed bottom-0 left-0 right-0 z-20 py-2 bg-gradient-to-t from-white/20 to-transparent">
+      {/* <footer className="fixed bottom-0 left-0 right-0 z-20 py-2 bg-gradient-to-t from-white/20 to-transparent">
         <p className="text-center text-xs text-muted-foreground/40">
           made with 💜 by{" "}
           <a
@@ -215,7 +215,7 @@ function App() {
             handikatriarlan
           </a>
         </p>
-      </footer>
+      </footer> */}
     </div>
   )
 }
