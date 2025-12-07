@@ -1,0 +1,10 @@
+# robots.txt for Do You Need a Small Reminder?
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://doyouneedasmallreminder.app/sitemap.xml
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1
